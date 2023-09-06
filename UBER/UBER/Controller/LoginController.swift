@@ -40,15 +40,9 @@ class LoginController: UIViewController {
         return UITextField().textField(withPlaceholder: "Password", isSecureTextEntry: false)
     }()
     
-    private let loginButton : UIButton = {
-        let button = UIButton()
+    private let loginButton : AuthButton = {
+        let button = AuthButton(type: .system)
         button.setTitle("Log In", for: .normal)
-        button.setTitleColor(UIColor(white: 1, alpha: 0.5), for: .normal)
-        button.backgroundColor = UIColor.mainBlueTint
-        button.layer.cornerRadius = 5
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
         return  button
     }()
     
@@ -57,9 +51,7 @@ class LoginController: UIViewController {
         let attributedTitle = NSMutableAttributedString(string: "Don`t have an account?   ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.white])
         
         attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint]))
-       
         button.addTarget(self, action: #selector(handlShowSignUp), for: .touchUpInside)
-        
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }()
@@ -74,8 +66,8 @@ class LoginController: UIViewController {
     //MARK: - SELETERS
     
     @objc func handlShowSignUp() {
-     let nav = Sign_upVC()
-        navigationController?.pushViewController(nav, animated:  true)
+        let nav = SignUpController()
+           navigationController?.pushViewController(nav, animated:  true)
     }
     
     //MARK: - Helper Functions

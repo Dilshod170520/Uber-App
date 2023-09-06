@@ -16,7 +16,7 @@ extension UIColor {
     static let mainBlueTint = UIColor.rgb(red: 17, green: 157, blue: 237)
 }
 extension UIView {
-        func inputContenerView(image: UIImage , textField: UITextField) -> UIView {
+    func inputContenerView(image: UIImage , textField: UITextField? = nil, segmentedControl: UISegmentedControl? = nil) -> UIView {
         let view = UIView()
    
         let imageView = UIImageView()
@@ -25,16 +25,31 @@ extension UIView {
         imageView.alpha = 0.87
         
         view.addSubview(imageView)
-        imageView.centerY(inView: view)
-        imageView.ancher(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
+           
         
-        view.addSubview(textField)
-        textField.ancher(left: imageView.rightAnchor,
-                              bottom: view.bottomAnchor,
-                              right: view.rightAnchor ,
-                              paddingLeft: 8 ,
-                              paddingBottom: 8)
-        textField.centerY(inView: view)
+        if let textField = textField {
+            
+            imageView.centerY(inView: view)
+            imageView.ancher(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
+            
+            view.addSubview(textField)
+            textField.ancher(left: imageView.rightAnchor,
+                                  bottom: view.bottomAnchor,
+                                  right: view.rightAnchor ,
+                                  paddingLeft: 8 ,
+                                  paddingBottom: 8)
+            textField.centerY(inView: view)
+        }
+        
+        if let sc = segmentedControl {
+            imageView.ancher(top: view.topAnchor, left: view.leftAnchor,paddingTop: -8,  paddingLeft: 8,  width: 24, height: 24)
+            
+            view.addSubview(sc)
+            sc.ancher(top: imageView.bottomAnchor,  left: view.leftAnchor, right: view.rightAnchor, paddingTop: 8,  paddingLeft: 8,  paddingRight: 8)
+            sc.centerY(inView: view, constant: 5)
+            
+        }
+       
         
         let sepaterView = UIView()
         sepaterView.backgroundColor = .lightGray
@@ -86,8 +101,8 @@ extension UIView {
     func centerX(inView view: UIView ) {
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
-    func centerY(inView view: UIView) {
-        centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    func centerY(inView view: UIView , constant: CGFloat  = 0 ) {
+        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant ).isActive = true
     }
 }
 extension UITextField {
