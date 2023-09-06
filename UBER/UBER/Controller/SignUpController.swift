@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpController: UIViewController {
     
@@ -55,6 +56,7 @@ class SignUpController: UIViewController {
     private let signupButton: AuthButton = {
         let button = AuthButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
+        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()
     
@@ -136,6 +138,29 @@ class SignUpController: UIViewController {
     //MARK: - Sellecters
     @objc func handleShowLogin() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func handleSignUp() {
+        guard let email = emailTextField.text else { return}
+        guard let password = passwordTF.text else { return}
+        guard let fullname = fullnameTF.text else { return}
+        let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
+ 
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("Failed to register user with error  \( error)")
+                return
+            }
+            guard let uid = result?.user.uid else { return}
+            
+            let values = ["email": email,
+                          "fullname": fullname,
+                           "accountType": accountTypeIndex ] as [String : Any]
+            
+            Database.database().reference().child("users").child(uid).updateChildValues(values) { error, ref in
+                print("Successfully registred user and saved data ... ")
+            }
+        }
     }
     
 }
