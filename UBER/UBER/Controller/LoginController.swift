@@ -57,6 +57,8 @@ class LoginController: UIViewController {
         let attributedTitle = NSMutableAttributedString(string: "Don`t have an account?   ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.white])
         
         attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.foregroundColor : UIColor.mainBlueTint]))
+       
+        button.addTarget(self, action: #selector(handlShowSignUp), for: .touchUpInside)
         
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
@@ -64,6 +66,24 @@ class LoginController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureUI()
+    }
+    
+   
+    //MARK: - SELETERS
+    
+    @objc func handlShowSignUp() {
+     let nav = Sign_upVC()
+        navigationController?.pushViewController(nav, animated:  true)
+    }
+    
+    //MARK: - Helper Functions
+    
+    func configureUI() {
+        
+        configureNavigationBar()
+        
         view.backgroundColor = UIColor.backgroundColor
         view.addSubview(titleLabel)
         titleLabel.ancher(top: view.safeAreaLayoutGuide.topAnchor)
@@ -80,10 +100,10 @@ class LoginController: UIViewController {
         view.addSubview( dontHaveAccountButton)
         dontHaveAccountButton.centerX(inView: view)
         dontHaveAccountButton.ancher(bottom: view.safeAreaLayoutGuide.bottomAnchor)
-        
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    func configureNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.barStyle  = .black
     }
 }
