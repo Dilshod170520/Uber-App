@@ -73,7 +73,7 @@ class LoginController: UIViewController {
     }
     
     @objc func handleLogin() {
-
+        
         guard let email = emailTextFeild.text else { return}
         guard  let password = passwordTextField.text else { return}
         
@@ -84,7 +84,20 @@ class LoginController: UIViewController {
                 return
             }
             
-            print("Succesfully logged user in ... ")
+            ///getting the all scenes
+                let scenes = UIApplication.shared.connectedScenes
+        //        getting windowScene from scenes
+                let windowScene = scenes.first as? UIWindowScene
+        //        getting window from windowScene
+                let window = windowScene?.windows.first
+        //        getting the root view controller
+            let rootVC = window?.rootViewController
+        //        changing the root view controller
+              window?.rootViewController = HomeViewController()
+
+//            guard let controller =  UIApplication.shared.connectedScenes.first?.inputView?.window?.rootViewController as? HomeViewController else { return}
+//            controller.configurUI()
+            self.dismiss(animated: true)
         }
     }
     

@@ -152,15 +152,20 @@ class SignUpController: UIViewController {
                 return
             }
             guard let uid = result?.user.uid else { return}
-            
             let values = ["email": email,
                           "fullname": fullname,
                            "accountType": accountTypeIndex ] as [String : Any]
-            
             Database.database().reference().child("users").child(uid).updateChildValues(values) { error, ref in
-                print("Successfully registred user and saved data ... ")
+                ///getting the all scenes
+                    let scenes = UIApplication.shared.connectedScenes
+            //        getting windowScene from scenes
+                    let windowScene = scenes.first as? UIWindowScene
+            //        getting window from windowScene
+                    let window = windowScene?.windows.first
+            //        changing the root view controller
+                  //window?.rootViewController = HomeViewController()
+                self.dismiss(animated: true)
             }
         }
     }
-    
 }

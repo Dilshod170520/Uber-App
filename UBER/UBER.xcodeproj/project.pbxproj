@@ -11,6 +11,7 @@
 		52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15602AA8577B00167E5C /* SignUpController.swift */; };
 		52BF15632AA8AE0F00167E5C /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15622AA8AE0F00167E5C /* AuthButton.swift */; };
 		52BF15652AA8BC1500167E5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BF15642AA8BC1500167E5C /* GoogleService-Info.plist */; };
+		52BF15672AA8F5CD00167E5C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15662AA8F5CD00167E5C /* HomeViewController.swift */; };
 		52C0067B2AA7884A006633F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C0067A2AA7884A006633F1 /* AppDelegate.swift */; };
 		52C006842AA7884C006633F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C006832AA7884C006633F1 /* Assets.xcassets */; };
 		52C006872AA7884C006633F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C006852AA7884C006633F1 /* LaunchScreen.storyboard */; };
@@ -25,6 +26,7 @@
 		52BF15602AA8577B00167E5C /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		52BF15622AA8AE0F00167E5C /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		52BF15642AA8BC1500167E5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		52BF15662AA8F5CD00167E5C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		52C006772AA7884A006633F1 /* UBER.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UBER.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C0067A2AA7884A006633F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52C006832AA7884C006633F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 			children = (
 				52BF155E2AA817D300167E5C /* LoginController.swift */,
 				52BF15602AA8577B00167E5C /* SignUpController.swift */,
+				52BF15662AA8F5CD00167E5C /* HomeViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -134,7 +137,6 @@
 				0B023CD4F25542D7966DBB26 /* Pods-UBER.debug.xcconfig */,
 				333F0D6258D68227EBEC3852 /* Pods-UBER.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -258,6 +260,7 @@
 				52C0067B2AA7884A006633F1 /* AppDelegate.swift in Sources */,
 				52BF155F2AA817D300167E5C /* LoginController.swift in Sources */,
 				52C006962AA7924F006633F1 /* Extantions.swift in Sources */,
+				52BF15672AA8F5CD00167E5C /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
