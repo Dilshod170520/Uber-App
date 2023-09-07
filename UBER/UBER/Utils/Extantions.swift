@@ -18,14 +18,14 @@ extension UIColor {
 extension UIView {
     func inputContenerView(image: UIImage , textField: UITextField? = nil, segmentedControl: UISegmentedControl? = nil) -> UIView {
         let view = UIView()
-   
+        
         let imageView = UIImageView()
         imageView.image = image
         imageView.tintColor = .white
         imageView.alpha = 0.87
         
         view.addSubview(imageView)
-           
+        
         
         if let textField = textField {
             
@@ -34,10 +34,10 @@ extension UIView {
             
             view.addSubview(textField)
             textField.ancher(left: imageView.rightAnchor,
-                                  bottom: view.bottomAnchor,
-                                  right: view.rightAnchor ,
-                                  paddingLeft: 8 ,
-                                  paddingBottom: 8)
+                             bottom: view.bottomAnchor,
+                             right: view.rightAnchor ,
+                             paddingLeft: 8 ,
+                             paddingBottom: 8)
             textField.centerY(inView: view)
         }
         
@@ -49,7 +49,7 @@ extension UIView {
             sc.centerY(inView: view, constant: 5)
             
         }
-       
+        
         
         let sepaterView = UIView()
         sepaterView.backgroundColor = .lightGray
@@ -101,9 +101,25 @@ extension UIView {
     func centerX(inView view: UIView ) {
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
-    func centerY(inView view: UIView , constant: CGFloat  = 0 ) {
-        centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant ).isActive = true
+    func centerY(inView view: UIView ,
+                 leftAnchor: NSLayoutXAxisAnchor? = nil,
+                 paddingLeft: CGFloat = 0 ,
+                 constant: CGFloat  = 0 ) {
+         
+        centerYAnchor.constraint(equalTo: view.centerYAnchor,
+                                 constant: constant ).isActive = true
+        
+        if let left = leftAnchor {
+            ancher(left: left , paddingLeft: paddingLeft)
+        }
     }
+    
+    func setDimensions(height: CGFloat , width: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: height).isActive = true
+        widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
 }
 extension UITextField {
     func textField(withPlaceholder placeholder: String , isSecureTextEntry: Bool) -> UITextField {

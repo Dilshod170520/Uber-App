@@ -16,7 +16,10 @@ class HomeViewController: UIViewController {
     
     private let locationManager = CLLocationManager()
     
-    //MARK: - LifeCycle
+    private let inputactivationView = LocationInputActivationView()
+        
+     
+ //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         enableLocationServices()
@@ -48,8 +51,21 @@ class HomeViewController: UIViewController {
     // MARK: - Helper functions
 
     func configurUI() {
+      configureMapView()
+        
+        view.addSubview(inputactivationView)
+        inputactivationView.centerX(inView: view)
+        inputactivationView.setDimensions(height: 50, width: view.frame.width - 64)
+        inputactivationView.ancher(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20)
+        
+    }
+    
+    func configureMapView() {
         view.addSubview(mapView)
         mapView.frame = view.frame
+        
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
     }
 }
 //MARK: - Location Services
@@ -78,7 +94,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            locationManager.requestAlwaysAuthorization()  
+            locationManager.requestAlwaysAuthorization()
         }
     }
 }
