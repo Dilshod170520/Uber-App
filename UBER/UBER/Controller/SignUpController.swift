@@ -7,11 +7,12 @@
 
 import UIKit
 import Firebase
+import GeoFire 
 
 class SignUpController: UIViewController {
     
     //MARK: - Propertes
-    
+    private var location = LocationHandler.shared.locationManager.location
     private let titleLabe: UILabel = {
         let label = UILabel()
         label.text = "UBER"
@@ -94,9 +95,57 @@ class SignUpController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        configurUI()
+        
+        let sharedLocationManager = LocationHandler.shared.locationManager
+        print("Debug: Locaiton is \( String(describing: sharedLocationManager?.location) )")
+    }
+    
+    
+    //MARK: - Sellecters
+    @objc func handleShowLogin() {
+        navigationController?.popViewController(animated: true)
+    }
+    @objc func handleSignUp() {
+        guard let email = emailTextField.text else { return}
+        guard let password = passwordTF.text else { return}
+        guard let fullname = fullnameTF.text else { return}
+        let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
+ 
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("DEBUG: Failed to register user with error  \(error.localizedDescription)")
+                return
+            }
+            guard let uid = result?.user.uid else { return}
+            let values = ["email": email,
+                          "fullname": fullname,
+                           "accountType": accountTypeIndex ] as [String : Any]
+            if accountTypeIndex == 1 {
+                var geofire = GeoFire(firebaseRef:  REF_DRIVER_LOCATIONS)
+                guard let location = self.location else { return }
+                geofire.setLocation(  location, forKey: uid) { error in
+                    self.uploadUserDataAndShowHomeController(uid: uid, values: values)
+                }
+            }
+            self.uploadUserDataAndShowHomeController(uid: uid, values: values)
+         }
     }
     
     //MARK: - Helper functions
+    func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
+        REF_USERS.child(uid).updateChildValues(values) { error, ref in
+             ///getting the all scenes
+                 let scenes = UIApplication.shared.connectedScenes
+         //        getting windowScene from scenes
+                 let windowScene = scenes.first as? UIWindowScene
+         //        getting window from windowScene
+                 let window = windowScene?.windows.first
+         //        changing the root view controller
+               window?.rootViewController = HomeViewController()
+             self.dismiss(animated: true)
+         }
+    }
+    
     func configurUI() {
         view.backgroundColor = .backgroundColor
         view.addSubview(titleLabe)
@@ -135,37 +184,6 @@ class SignUpController: UIViewController {
         alreadyHaveAccount.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
     }
     
-    //MARK: - Sellecters
-    @objc func handleShowLogin() {
-        navigationController?.popViewController(animated: true)
-    }
     
-    @objc func handleSignUp() {
-        guard let email = emailTextField.text else { return}
-        guard let password = passwordTF.text else { return}
-        guard let fullname = fullnameTF.text else { return}
-        let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
- 
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if let error = error {
-                print("DEBUG: Failed to register user with error  \( error.localizedDescription)")
-                return
-            }
-            guard let uid = result?.user.uid else { return}
-            let values = ["email": email,
-                          "fullname": fullname,
-                           "accountType": accountTypeIndex ] as [String : Any]
-            Database.database().reference().child("users").child(uid).updateChildValues(values) { error, ref in
-                ///getting the all scenes
-                    let scenes = UIApplication.shared.connectedScenes
-            //        getting windowScene from scenes
-                    let windowScene = scenes.first as? UIWindowScene
-            //        getting window from windowScene
-                    let window = windowScene?.windows.first
-            //        changing the root view controller
-                  //window?.rootViewController = HomeViewController()
-                self.dismiss(animated: true)
-            }
-        }
-    }
+    
 }

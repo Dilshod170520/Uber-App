@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import CoreLocation
 import MapKit
 
 class HomeViewController: UIViewController {
@@ -14,7 +15,7 @@ class HomeViewController: UIViewController {
     //MARK: - Properties
     private let mapView =  MKMapView()
     
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationHandler.shared.locationManager
     private let inputactivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
     private let tableVeiw = UITableView()
@@ -30,9 +31,9 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         enableLocationServices()
         checkIfLoggedIn()
-        // signOut()
-        fetchUserData()  
-        
+        fetchUserData()
+        fetchDrivers() 
+        signOut()
     }
     
     //MARK: - API
@@ -40,6 +41,12 @@ class HomeViewController: UIViewController {
         Servece.shared.fetchUserData { user in
             self.user = user
         }
+    }
+    
+    func fetchDrivers() {
+        guard let location = locationManager?.location else { return}
+        
+        Servece.shared.fetchDrivers(location: location)
     }
     
     func checkIfLoggedIn() {
@@ -53,9 +60,15 @@ class HomeViewController: UIViewController {
             configurUI()
         }
     }
+    
     func signOut() {
         do {
             try Auth.auth().signOut()
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true)
+            }
         } catch  {
             print("DEBUG: Error singing out ")
         }
@@ -113,7 +126,8 @@ class HomeViewController: UIViewController {
         tableVeiw.delegate = self
         tableVeiw.dataSource = self
         
-        tableVeiw.register(LocationCell.self, forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        tableVeiw.register(LocationCell.self,
+                            forCellReuseIdentifier: LocationCell.reuseIdentifier)
         tableVeiw.rowHeight = 60
         tableVeiw.tableFooterView = UIView()
         
@@ -123,37 +137,27 @@ class HomeViewController: UIViewController {
                                  y: view.frame.height ,
                                  width: view.frame.width,
                                  height: height)
-        
         view.addSubview(tableVeiw )
     }
 }
 //MARK: - Location Services
-extension HomeViewController: CLLocationManagerDelegate {
+extension HomeViewController  {
     func enableLocationServices() {
-        locationManager.delegate = self
-        
         switch  CLLocationManager.authorizationStatus() {
         case .notDetermined:
             print("Debug: Not determined ..")
-            locationManager.requestWhenInUseAuthorization()
+            locationManager?.requestWhenInUseAuthorization()
         case .denied , .restricted:
             break
         case .authorizedAlways:
             print("Debug: Auth always ..")
-            locationManager.startUpdatingLocation()
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager?.startUpdatingLocation()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         case .authorizedWhenInUse:
             print("Debug: Auth when in use ..")
-            locationManager.requestAlwaysAuthorization()
+            locationManager?.requestAlwaysAuthorization()
         @unknown default:
             break
-        }
-        
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
-            locationManager.requestAlwaysAuthorization()
         }
     }
 }
