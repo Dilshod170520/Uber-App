@@ -10,22 +10,26 @@ import Firebase
 import MapKit
 
 class HomeViewController: UIViewController {
-
+    
     //MARK: - Properties
     private let mapView =  MKMapView()
     
     private let locationManager = CLLocationManager()
-    
     private let inputactivationView = LocationInputActivationView()
-        
-     
- //MARK: - LifeCycle
+    private let locationInputView = LocationInputView()
+    private let tableVeiw = UITableView()
+    
+    private  final let locationInputHeight: CGFloat  = 230
+    
+    
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         enableLocationServices()
         checkIfLoggedIn()
-       // signOut()
-        view.backgroundColor = .red
+        // signOut()
+        
+        
     }
     
     //MARK: - API
@@ -49,15 +53,24 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - Helper functions
-
+    
     func configurUI() {
-      configureMapView()
+        configureMapView()
         
         view.addSubview(inputactivationView)
+        
         inputactivationView.centerX(inView: view)
         inputactivationView.setDimensions(height: 50, width: view.frame.width - 64)
         inputactivationView.ancher(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20)
+        inputactivationView.alpha = 0
+        inputactivationView.delegate = self
         
+        locationInputView.delegate = self
+        
+        UIView.animate(withDuration: 2) {
+            self.inputactivationView.alpha = 1
+        }
+        configureTableVeiw()
     }
     
     func configureMapView() {
@@ -66,6 +79,42 @@ class HomeViewController: UIViewController {
         
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+    }
+    
+    func configurelocationInputView() {
+        locationInputView.delegate = self
+        view.addSubview(locationInputView)
+        locationInputView.ancher(top: view.topAnchor,
+                                 left: view.leftAnchor,
+                                 right: view.rightAnchor,
+                                 height: locationInputHeight)
+        locationInputView.alpha = 0
+        
+        UIView.animate(withDuration: 0.5) { [self] in
+            locationInputView.alpha = 1
+        } completion: { _ in
+            UIView.animate(withDuration: 0.6) {
+                self.tableVeiw.frame.origin.y = self.locationInputHeight
+            }
+        }
+        
+    }
+    
+    func configureTableVeiw() {
+        tableVeiw.delegate = self
+        tableVeiw.dataSource = self
+        
+        tableVeiw.register(LocationCell.self, forCellReuseIdentifier: LocationCell.reuseIdentifier)
+        tableVeiw.rowHeight = 60
+        
+        let height = view.frame.height - locationInputHeight
+        
+        tableVeiw.frame = CGRect(x: 0,
+                                 y: view.frame.height ,
+                                 width: view.frame.width,
+                                 height: height)
+        
+        view.addSubview(tableVeiw )
     }
 }
 //MARK: - Location Services
@@ -96,5 +145,41 @@ extension HomeViewController: CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             locationManager.requestAlwaysAuthorization()
         }
+    }
+}
+//MARK: - LocationInputActivationViewDelegate
+
+extension HomeViewController: LocationInputActivationViewDelegate{
+    func presentLocationInputView() {
+        inputactivationView.alpha = 0
+        configurelocationInputView()
+    }
+}
+// MARK: - LocationViewDelegate
+extension HomeViewController: LocationInputViewDelegate {
+    func dismissLocationInputView() {
+        tableVeiw.removeFromSuperview()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.locationInputView.alpha = 0
+            self.tableVeiw.frame.origin.y = self.view.frame.height
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.inputactivationView.alpha = 1
+            }
+        } 
+    }
+}
+
+//MARK: -
+
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        324
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
     }
 }

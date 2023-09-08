@@ -4,12 +4,17 @@
 //
 //  Created by MacBook Pro on 07/09/23.
 //
-
 import UIKit
 
+protocol LocationInputActivationViewDelegate: class  {
+    func presentLocationInputView()
+}
 class LocationInputActivationView: UIView {
     
     //MARK: - Properties
+    
+    weak var delegate: LocationInputActivationViewDelegate?
+    
     let indecaterView : UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -28,12 +33,7 @@ class LocationInputActivationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.55
-        layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
-        layer.masksToBounds = false
-        
-        
+        addShadow()
         
         addSubview(indecaterView)
         indecaterView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 16)
@@ -42,9 +42,15 @@ class LocationInputActivationView: UIView {
         addSubview(placeholderLabel)
         placeholderLabel.centerY(inView: self, leftAnchor: indecaterView.rightAnchor, paddingLeft: 20)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(presentLocationInputView))
+        addGestureRecognizer(tap)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    //MARK: - Selecters
+   @objc func presentLocationInputView() {
+       delegate?.presentLocationInputView()
     }
 }

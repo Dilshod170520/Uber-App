@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */; };
+		52917DF32AA9DEF3000FDD67 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */; };
+		52917DF52AAAF2B1000FDD67 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF42AAAF2B1000FDD67 /* LocationCell.swift */; };
 		52BF155F2AA817D300167E5C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF155E2AA817D300167E5C /* LoginController.swift */; };
 		52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15602AA8577B00167E5C /* SignUpController.swift */; };
 		52BF15632AA8AE0F00167E5C /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15622AA8AE0F00167E5C /* AuthButton.swift */; };
@@ -24,6 +26,8 @@
 		0B023CD4F25542D7966DBB26 /* Pods-UBER.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.debug.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.debug.xcconfig"; sourceTree = "<group>"; };
 		333F0D6258D68227EBEC3852 /* Pods-UBER.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.release.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.release.xcconfig"; sourceTree = "<group>"; };
 		52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
+		52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
+		52917DF42AAAF2B1000FDD67 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		52BF155E2AA817D300167E5C /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		52BF15602AA8577B00167E5C /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		52BF15622AA8AE0F00167E5C /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 			children = (
 				52BF15622AA8AE0F00167E5C /* AuthButton.swift */,
 				52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */,
+				52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */,
+				52917DF42AAAF2B1000FDD67 /* LocationCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -259,10 +265,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */,
+				52917DF32AA9DEF3000FDD67 /* LocationInputView.swift in Sources */,
 				52BF15632AA8AE0F00167E5C /* AuthButton.swift in Sources */,
 				52C0067B2AA7884A006633F1 /* AppDelegate.swift in Sources */,
 				52BF155F2AA817D300167E5C /* LoginController.swift in Sources */,
 				52C006962AA7924F006633F1 /* Extantions.swift in Sources */,
+				52917DF52AAAF2B1000FDD67 /* LocationCell.swift in Sources */,
 				52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */,
 				52BF15672AA8F5CD00167E5C /* HomeViewController.swift in Sources */,
 			);
