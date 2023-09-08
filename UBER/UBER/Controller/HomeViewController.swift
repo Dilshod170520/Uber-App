@@ -106,6 +106,7 @@ class HomeViewController: UIViewController {
         
         tableVeiw.register(LocationCell.self, forCellReuseIdentifier: LocationCell.reuseIdentifier)
         tableVeiw.rowHeight = 60
+        tableVeiw.tableFooterView = UIView()
         
         let height = view.frame.height - locationInputHeight
         
@@ -158,16 +159,17 @@ extension HomeViewController: LocationInputActivationViewDelegate{
 // MARK: - LocationViewDelegate
 extension HomeViewController: LocationInputViewDelegate {
     func dismissLocationInputView() {
-        tableVeiw.removeFromSuperview()
+        
         
         UIView.animate(withDuration: 0.3) {
             self.locationInputView.alpha = 0
             self.tableVeiw.frame.origin.y = self.view.frame.height
         } completion: { _ in
+            self.tableVeiw.removeFromSuperview()
             UIView.animate(withDuration: 0.3) {
-                self.inputactivationView.alpha = 1
+                 self.inputactivationView.alpha = 1
             }
-        } 
+        }
     }
 }
 
@@ -175,11 +177,20 @@ extension HomeViewController: LocationInputViewDelegate {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        324
+        return section == 0 ? 2 : 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return  "Test"
     }
 }
