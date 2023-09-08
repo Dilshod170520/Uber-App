@@ -21,6 +21,9 @@ class HomeViewController: UIViewController {
     
     private  final let locationInputHeight: CGFloat  = 230
     
+    private var  user: User? {
+        didSet { locationInputView.user = user }
+    }
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -28,11 +31,17 @@ class HomeViewController: UIViewController {
         enableLocationServices()
         checkIfLoggedIn()
         // signOut()
-        
+        fetchUserData()  
         
     }
     
     //MARK: - API
+    func fetchUserData() {
+        Servece.shared.fetchUserData { user in
+            self.user = user
+        }
+    }
+    
     func checkIfLoggedIn() {
         if Auth.auth().currentUser?.uid  == nil {
             DispatchQueue.main.async {
