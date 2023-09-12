@@ -27,35 +27,38 @@ struct Servece {
         }
     }
     
-//    func fetchDrivers(location: CLLocation) {
-//        let  geoFire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
-//
-//        REF_DRIVER_LOCATIONS.observe(.value) { (snapshot) in
-//
+    func fetchDrivers(location: CLLocation) {
+        let  geoFire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+
+        REF_DRIVER_LOCATIONS.observe(.value) { (snapshot) in
+//            geoFire.query(at: location, withRadius: 50).observe(.keyMoved) {uid , location in
+//           
+//                
+//            }
 //            geoFire.query(at: location, withRadius: 50).observe(.keyEntered) {( uid, locat) in
 //                print("Debug: user uid: \( uid)")
-//                print("Debug: user location cordenate: \(locat)")
+//                print("Debug: user location cordenate: \(locat.)")
 //            }
-//        }
-//    }
-    
-    func fetchDrivers(location: CLLocation) {
-        let geoFire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
-        
-        // Add an observer for .childAdded event to track changes in driver locations
-        REF_DRIVER_LOCATIONS.observe(.childAdded) { (snapshot) in
-           
-            // Handle changes to driver locations here
-            // You can access the snapshot and extract relevant data
-            // e.g., snapshot.key and snapshot.value
         }
-        
-        // Set up the GeoFire query and its observer as before
-//        geoFire.query(at: location, withRadius: 50).observe(.keyEntered) { (uid, location) in
-//            print("Debug: user uid: \(uid)")
-//            print("Debug: user location coordinate: \(location)")
-//        }
     }
+    
+//    func fetchDrivers(location: CLLocation) {
+//        let geoFire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+//
+//        // Add an observer for .childAdded event to track changes in driver locations
+//        REF_DRIVER_LOCATIONS.observe(.childAdded) { (snapshot) in
+//
+//            // Handle changes to driver locations here
+//            // You can access the snapshot and extract relevant data
+//            // e.g., snapshot.key and snapshot.value
+//        }
+//
+//        // Set up the GeoFire query and its observer as before
+////        geoFire.query(at: location, withRadius: 50).observe(.keyEntered) { (uid, location) in
+////            print("Debug: user uid: \(uid)")
+////            print("Debug: user location coordinate: \(location)")
+////        }
+//    }
 
  }
  
