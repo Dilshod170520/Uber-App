@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52698AD12AB3232B0054E987 /* DriverAnnatation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52698AD02AB3232B0054E987 /* DriverAnnatation.swift */; };
 		52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */; };
 		52917DF32AA9DEF3000FDD67 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */; };
 		52917DF52AAAF2B1000FDD67 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF42AAAF2B1000FDD67 /* LocationCell.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		0B023CD4F25542D7966DBB26 /* Pods-UBER.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.debug.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.debug.xcconfig"; sourceTree = "<group>"; };
 		333F0D6258D68227EBEC3852 /* Pods-UBER.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.release.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.release.xcconfig"; sourceTree = "<group>"; };
+		52698AD02AB3232B0054E987 /* DriverAnnatation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnatation.swift; sourceTree = "<group>"; };
 		52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
 		52917DF42AAAF2B1000FDD67 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				52917DF82AAB448A000FDD67 /* User.swift */,
+				52698AD02AB3232B0054E987 /* DriverAnnatation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				52C0067B2AA7884A006633F1 /* AppDelegate.swift in Sources */,
 				52BF155F2AA817D300167E5C /* LoginController.swift in Sources */,
 				52C006962AA7924F006633F1 /* Extantions.swift in Sources */,
+				52698AD12AB3232B0054E987 /* DriverAnnatation.swift in Sources */,
 				52917DF52AAAF2B1000FDD67 /* LocationCell.swift in Sources */,
 				52917DF72AAB394D000FDD67 /* Service.swift in Sources */,
 				52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */,

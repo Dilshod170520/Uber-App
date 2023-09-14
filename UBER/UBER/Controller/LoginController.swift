@@ -84,20 +84,19 @@ class LoginController: UIViewController {
                 return
             }
             
-            ///getting the all scenes
-                let scenes = UIApplication.shared.connectedScenes
-        //        getting windowScene from scenes
-                let windowScene = scenes.first as? UIWindowScene
-        //        getting window from windowScene
-                let window = windowScene?.windows.first
-        //        getting the root view controller
-            let rootVC = window?.rootViewController
-        //        changing the root view controller
-              window?.rootViewController = HomeViewController()
-
-//            guard let controller =  UIApplication.shared.connectedScenes.first?.inputView?.window?.rootViewController as? HomeViewController else { return}
-//            controller.configurUI()
+            // /getting the all scenes
+            let scenes = UIApplication.shared.connectedScenes
+            //        getting windowScene from scenes
+            let windowScene = scenes.first as? UIWindowScene
+            //        getting window from windowScene
+            let window = windowScene?.windows.first
+            //        getting the root view controller
+            let rootVC = window?.rootViewController as? HomeViewController
+            //        changing the root view controller
+             window?.rootViewController = HomeViewController()
+            rootVC?.configure()
             self.dismiss(animated: true)
+           
         }
     }
     

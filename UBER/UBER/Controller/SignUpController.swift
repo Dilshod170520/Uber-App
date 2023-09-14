@@ -136,16 +136,19 @@ class SignUpController: UIViewController {
     //MARK: - Helper functions
     func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
         REF_USERS.child(uid).updateChildValues(values) { error, ref in
-             ///getting the all scenes
+            // /getting the all scenes
                  let scenes = UIApplication.shared.connectedScenes
          //        getting windowScene from scenes
                  let windowScene = scenes.first as? UIWindowScene
          //        getting window from windowScene
                  let window = windowScene?.windows.first
+         //        getting the root view controller
+             let rootVC = window?.rootViewController as? HomeViewController
          //        changing the root view controller
                window?.rootViewController = HomeViewController()
-             self.dismiss(animated: true)
-         }
+             rootVC?.configure()
+           self.dismiss(animated: true)
+      }
     }
     
     func configurUI() {

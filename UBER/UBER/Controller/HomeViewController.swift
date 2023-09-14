@@ -10,15 +10,16 @@ import Firebase
 import CoreLocation
 import MapKit
 
+private let annotationIdentifier = "DriverAnnotation"
 class HomeViewController: UIViewController {
-    
+        
     //MARK: - Properties
     private let mapView =  MKMapView()
-    
     private let locationManager = LocationHandler.shared.locationManager
     private let inputactivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
     private let tableVeiw = UITableView()
+    private var searchResults = [MKPlacemark]()
     
     private  final let locationInputHeight: CGFloat  = 230
     
@@ -31,11 +32,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         enableLocationServices()
         checkIfLoggedIn()
-        fetchUserData()
-        fetchDrivers() 
-        //signOut()
     }
-    
     //MARK: - API
     func fetchUserData() {
         guard let uid = Auth.auth().currentUser?.uid else { return}
@@ -44,12 +41,26 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func fetchDrivers() {
-        guard let location = locationManager?.location else { return}
-        
-//        Servece.shared.fetchDrivers(location: location)
+    func fetchDrivers () {
+        guard let location = locationManager?.location else { return }
+        Servece.shared.fetchDrivers (location: location) { (driver) in
+            guard let coordinate = driver.location?.coordinate else { return }
+            let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
+            var driverIsVisible: Bool {
+                return self.mapView.annotations.contains(where: { annotation -> Bool in
+                    guard let driverAnno = annotation as? DriverAnnotation else { return false }
+                    if driverAnno.uid == driver.uid {
+                        driverAnno.updateAnnotationPosition(withCoordenate: coordinate)
+                        return true
+                    }
+                        return false
+                    })
+                }
+            if !driverIsVisible {
+                self.mapView.addAnnotation(annotation)
+            }
+        }
     }
-    
     func checkIfLoggedIn() {
         if Auth.auth().currentUser?.uid  == nil {
             DispatchQueue.main.async {
@@ -58,7 +69,7 @@ class HomeViewController: UIViewController {
                 self.present(nav, animated: true)
             }
         } else {
-            configurUI()
+           configure()
         }
     }
     
@@ -70,26 +81,26 @@ class HomeViewController: UIViewController {
                 nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: true)
             }
-        } catch  {
+        } catch {
             print("DEBUG: Error singing out ")
         }
     }
     
     // MARK: - Helper functions
-    
+    func configure() {
+        configurUI()
+        fetchUserData()
+        fetchDrivers()
+    }
     func configurUI() {
         configureMapView()
-        
         view.addSubview(inputactivationView)
-        
         inputactivationView.centerX(inView: view)
         inputactivationView.setDimensions(height: 50, width: view.frame.width - 64)
         inputactivationView.ancher(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20)
         inputactivationView.alpha = 0
         inputactivationView.delegate = self
-        
         locationInputView.delegate = self
-        
         UIView.animate(withDuration: 2) {
             self.inputactivationView.alpha = 1
         }
@@ -102,6 +113,7 @@ class HomeViewController: UIViewController {
         
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        mapView.delegate = self
     }
     
     func configurelocationInputView() {
@@ -122,7 +134,6 @@ class HomeViewController: UIViewController {
         }
         
     }
-    
     func configureTableVeiw() {
         tableVeiw.delegate = self
         tableVeiw.dataSource = self
@@ -133,12 +144,45 @@ class HomeViewController: UIViewController {
         tableVeiw.tableFooterView = UIView()
         
         let height = view.frame.height - locationInputHeight
-        
         tableVeiw.frame = CGRect(x: 0,
                                  y: view.frame.height ,
                                  width: view.frame.width,
                                  height: height)
         view.addSubview(tableVeiw )
+    }
+}
+
+//MARK: - MAP Helper functions
+
+private extension HomeViewController {
+    func searchBy(naturalLanguageQuery: String, complition: @escaping([MKPlacemark]) -> Void) {
+        var resoults = [MKPlacemark]()
+        
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguageQuery
+        
+        let search = MKLocalSearch(request: request)
+        search.start { response, error in
+            guard let response = response else { return}
+            response.mapItems.forEach { item in
+                resoults.append(item.placemark)
+            }
+            complition(resoults)
+        }
+    }
+}
+// MARK: - MKMapViewDelegate
+
+extension HomeViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation {
+            let view = MKAnnotationView(
+                annotation: annotation, reuseIdentifier: annotationIdentifier)
+            view.image =  UIImage(systemName: "car.side.fill")
+            return view
+        }
+        return nil
     }
 }
 //MARK: - Location Services
@@ -161,19 +205,24 @@ extension HomeViewController  {
         }
     }
 }
-//MARK: - LocationInputActivationViewDelegate
 
-extension HomeViewController: LocationInputActivationViewDelegate{
+//MARK: - LocationInputActivationViewDelegate
+extension HomeViewController: LocationInputActivationViewDelegate {
     func presentLocationInputView() {
-        inputactivationView.alpha = 0
-        configurelocationInputView()
+         inputactivationView.alpha = 0
+         configurelocationInputView()
     }
 }
 // MARK: - LocationViewDelegate
 extension HomeViewController: LocationInputViewDelegate {
+    func executeSearch(query: String) {
+        searchBy(naturalLanguageQuery: query) { results in
+            self.searchResults = results
+            self.tableVeiw.reloadData()
+        }
+    }
+    
     func dismissLocationInputView() {
-        
-        
         UIView.animate(withDuration: 0.3) {
             self.locationInputView.alpha = 0
             self.tableVeiw.frame.origin.y = self.view.frame.height
@@ -186,7 +235,7 @@ extension HomeViewController: LocationInputViewDelegate {
     }
 }
 
-//MARK: -
+//MARK: - UITableViewDelegate UITableViewDataSource
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -194,12 +243,15 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return 2
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 2 : 5
+        return section == 0 ? 2 : searchResults.count 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
-        
+        if indexPath.section == 1 {
+            cell.placemark = searchResults[indexPath.row ]
+        }
+       
         return cell
     }
     

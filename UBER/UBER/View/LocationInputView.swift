@@ -9,6 +9,7 @@ import UIKit
 
 protocol LocationInputViewDelegate: class {
     func dismissLocationInputView()
+    func executeSearch(query: String)
 }
 
 class LocationInputView: UIView {
@@ -27,7 +28,7 @@ class LocationInputView: UIView {
         return button
     }()
     
-    private  let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel() 
         label.textColor = .darkGray
         label.font = UIFont.systemFont(ofSize: 16)
@@ -72,6 +73,7 @@ class LocationInputView: UIView {
         tf.backgroundColor = .lightGray
         tf.returnKeyType = .search
         tf.font = UIFont.systemFont(ofSize: 16 )
+        tf.delegate = self
         
         let padding = UIView()
         padding.setDimensions(height: 30, width: 10)
@@ -135,8 +137,7 @@ class LocationInputView: UIView {
         linkingView.ancher(top: startLocationIndeketorView.bottomAnchor, bottom: destanitionIndekatorView.topAnchor , paddingTop: 5, paddingBottom: 5, width: 1.5)
         
     }
-    // MARK: - Sellecter
-  
+// MARK: - Sellecter
     @objc func handleBackTapped() {
         delegate?.dismissLocationInputView()
     }
@@ -144,4 +145,12 @@ class LocationInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
  }
+//MARK: - UITextFieldDelegate
 
+extension LocationInputView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let query = textField.text else { return false}
+        delegate?.executeSearch(query: query)
+        return true
+    }
+}
