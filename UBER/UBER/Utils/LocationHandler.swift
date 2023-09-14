@@ -8,9 +8,9 @@
 import CoreLocation
 
 class LocationHandler: NSObject, CLLocationManagerDelegate {
-     static let shared = LocationHandler()
-    var locationManager: CLLocationManager! = nil
-    var location: CLLocation!
+    static let shared = LocationHandler()
+    var locationManager: CLLocationManager!
+    var location: CLLocation?
     
     override init() {
         super.init()

@@ -13,6 +13,7 @@ class SignUpController: UIViewController {
     
     //MARK: - Propertes
     private var location = LocationHandler.shared.locationManager.location
+    
     private let titleLabe: UILabel = {
         let label = UILabel()
         label.text = "UBER"
@@ -95,9 +96,6 @@ class SignUpController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        configurUI()
-        
-        let sharedLocationManager = LocationHandler.shared.locationManager
-        print("Debug: Locaiton is \( String(describing: sharedLocationManager?.location) )")
     }
     
     
@@ -117,13 +115,17 @@ class SignUpController: UIViewController {
                 return
             }
             guard let uid = result?.user.uid else { return}
+            
+           
+
             let values = ["email": email,
                           "fullname": fullname,
                            "accountType": accountTypeIndex ] as [String : Any]
             if accountTypeIndex == 1 {
-                var geofire = GeoFire(firebaseRef:  REF_DRIVER_LOCATIONS)
-                guard let location = self.location else { return }
-                geofire.setLocation(  location, forKey: uid) { error in
+            let geofire = GeoFire(firebaseRef:  REF_DRIVER_LOCATIONS)
+            guard let location = self.location else { return }
+                
+                geofire.setLocation( location, forKey: uid) { error in
                     self.uploadUserDataAndShowHomeController(uid: uid, values: values)
                 }
             }

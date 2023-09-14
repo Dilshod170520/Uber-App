@@ -33,12 +33,13 @@ class HomeViewController: UIViewController {
         checkIfLoggedIn()
         fetchUserData()
         fetchDrivers() 
-        signOut()
+        //signOut()
     }
     
     //MARK: - API
     func fetchUserData() {
-        Servece.shared.fetchUserData { user in
+        guard let uid = Auth.auth().currentUser?.uid else { return}
+        Servece.shared.fetchUserData(uid: uid) { user in
             self.user = user
         }
     }
@@ -46,7 +47,7 @@ class HomeViewController: UIViewController {
     func fetchDrivers() {
         guard let location = locationManager?.location else { return}
         
-        Servece.shared.fetchDrivers(location: location)
+//        Servece.shared.fetchDrivers(location: location)
     }
     
     func checkIfLoggedIn() {
@@ -143,7 +144,7 @@ class HomeViewController: UIViewController {
 //MARK: - Location Services
 extension HomeViewController  {
     func enableLocationServices() {
-        switch  CLLocationManager.authorizationStatus() {
+    switch  locationManager?.authorizationStatus {
         case .notDetermined:
             print("Debug: Not determined ..")
             locationManager?.requestWhenInUseAuthorization()
@@ -156,8 +157,7 @@ extension HomeViewController  {
         case .authorizedWhenInUse:
             print("Debug: Auth when in use ..")
             locationManager?.requestAlwaysAuthorization()
-        @unknown default:
-            break
+       default: break
         }
     }
 }
