@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
     private let mapView =  MKMapView()
     private let locationManager = LocationHandler.shared.locationManager
     private let inputactivationView = LocationInputActivationView()
+    private let rideActionView = RideActionView()
     private let locationInputView = LocationInputView()
     private let tableVeiw = UITableView()
     private var searchResults = [MKPlacemark]()
@@ -142,6 +143,7 @@ class HomeViewController: UIViewController {
     }
     func configurUI() {
         configureMapView()
+        configureRideActionView()
         view.addSubview(inputactivationView)
         
         view.addSubview(actionBtn)
@@ -170,6 +172,14 @@ class HomeViewController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         mapView.delegate = self
+    }
+    
+    func configureRideActionView() {
+        view.addSubview(rideActionView)
+        rideActionView.frame = CGRect(x: 0,
+                                      y: view.frame.height - 300 ,
+                                      width: view.frame.width,
+                                      height: 300)
     }
     
     func configurelocationInputView() {
