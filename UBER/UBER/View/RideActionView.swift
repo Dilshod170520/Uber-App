@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import MapKit
 
 class RideActionView: UIView {
 
 //MARK: - Properteis
+    
+    var destination: MKPlacemark? {
+        didSet {
+            titleLabel.text = destination?.name 
+            adressLabel.text = destination?.address
+        }
+    }
    private let titleLabel: UILabel = {
         let label = UILabel()
        label.font = UIFont.systemFont(ofSize: 25 )
@@ -57,7 +65,7 @@ class RideActionView: UIView {
         button.backgroundColor = .black
         button.setTitle("CONFORM UBER X", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         button.addTarget(self, action: #selector(actionBtnPressed), for: .touchUpInside)
         return button
     }()

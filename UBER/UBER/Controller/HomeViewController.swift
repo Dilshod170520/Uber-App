@@ -33,6 +33,7 @@ class HomeViewController: UIViewController {
     private let tableVeiw = UITableView()
     private var searchResults = [MKPlacemark]()
     private  final let locationInputHeight: CGFloat  = 230
+    private final let rideActionViewHeight: CGFloat = 300
     private var actionbuttonConfig = ActionButtonConfiguration()
     private var route: MKRoute?
     private var  user: User? {
@@ -67,6 +68,7 @@ class HomeViewController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.inputactivationView.alpha = 1
                 self.configureActionBtn(config: .showMenu)
+                self.animateRideActionView(shouldShow: false )
             }
            
         }
@@ -177,9 +179,9 @@ class HomeViewController: UIViewController {
     func configureRideActionView() {
         view.addSubview(rideActionView)
         rideActionView.frame = CGRect(x: 0,
-                                      y: view.frame.height - 300 ,
+                                      y: view.frame.height,
                                       width: view.frame.width,
-                                      height: 300)
+                                      height: rideActionViewHeight)
     }
     
     func configurelocationInputView() {
@@ -224,6 +226,18 @@ class HomeViewController: UIViewController {
            
           }, completion: completion)
         }
+    
+    func animateRideActionView(shouldShow: Bool, distination: MKPlacemark? = nil) {
+        let yOrigin = shouldShow ?  self.view.frame.height - self.rideActionViewHeight : self.view.frame.height
+        
+        if shouldShow {
+            guard let distination = distination else { return}
+            self.rideActionView.destination = distination
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.rideActionView.frame.origin.y = yOrigin
+        }
+      }
     }
 
 
@@ -383,7 +397,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             self.mapView.selectAnnotation(annotation, animated: true)
             
             let annotations = self.mapView.annotations.filter ( { !$0.isKind(of: DriverAnnotation.self) } )
-            self.mapView.showAnnotations(annotations, animated: true)
+            self.mapView.zoomToFit(annotation: annotations )
+            
+            self.animateRideActionView(shouldShow: true, distination: selectedPlacemark )
+            
         }
     }
 }
