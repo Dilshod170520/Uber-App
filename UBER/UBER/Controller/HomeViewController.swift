@@ -36,8 +36,15 @@ class HomeViewController: UIViewController {
     private final let rideActionViewHeight: CGFloat = 300
     private var actionbuttonConfig = ActionButtonConfiguration()
     private var route: MKRoute?
+    
     private var  user: User? {
-        didSet { locationInputView.user = user }
+        didSet {
+            locationInputView.user = user
+            if user?.accountType == .passenger {
+                fetchDrivers()
+                configureLocationInputActivationView()
+            }
+        }
     }
     
     private let actionBtn: UIButton = {
@@ -53,6 +60,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         enableLocationServices()
         checkIfLoggedIn()
+  
     }
     
     // MARK: - Selecters
@@ -76,14 +84,15 @@ class HomeViewController: UIViewController {
     //MARK: - API
     func fetchUserData() {
         guard let uid = Auth.auth().currentUser?.uid else { return}
-        Servece.shared.fetchUserData(uid: uid) { user in
+        Service.shared.fetchUserData(uid: uid) { user in
             self.user = user
         }
     }
     
     func fetchDrivers () {
+       
         guard let location = locationManager?.location else { return }
-        Servece.shared.fetchDrivers (location: location) { (driver) in
+        Service.shared.fetchDrivers (location: location) { (driver) in
             guard let coordinate = driver.location?.coordinate else { return }
             let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
             var driverIsVisible: Bool {
@@ -129,7 +138,7 @@ class HomeViewController: UIViewController {
     func configure() {
         configurUI()
         fetchUserData()
-        fetchDrivers()
+       
     }
     
    
@@ -146,7 +155,6 @@ class HomeViewController: UIViewController {
     func configurUI() {
         configureMapView()
         configureRideActionView()
-        view.addSubview(inputactivationView)
         
         view.addSubview(actionBtn)
         actionBtn.ancher(top: view.safeAreaLayoutGuide.topAnchor,
@@ -154,17 +162,22 @@ class HomeViewController: UIViewController {
                          paddingLeft: 16,
                          width: 45,
                          height: 45)
-        
+      
+        configureTableVeiw()
+    }
+    
+    func configureLocationInputActivationView() {
+        view.addSubview(inputactivationView)
         inputactivationView.centerX(inView: view)
         inputactivationView.setDimensions(height: 50, width: view.frame.width - 64)
         inputactivationView.ancher(top: actionBtn.bottomAnchor, paddingTop: 20)
         inputactivationView.alpha = 0
         inputactivationView.delegate = self
-        locationInputView.delegate = self
+        // locationInputView.delegate = self
+        
         UIView.animate(withDuration: 2) {
             self.inputactivationView.alpha = 1
         }
-        configureTableVeiw()
     }
     
     func configureMapView() {
@@ -178,6 +191,7 @@ class HomeViewController: UIViewController {
     
     func configureRideActionView() {
         view.addSubview(rideActionView)
+        rideActionView.delegate = self
         rideActionView.frame = CGRect(x: 0,
                                       y: view.frame.height,
                                       width: view.frame.width,
@@ -401,6 +415,21 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             
             self.animateRideActionView(shouldShow: true, distination: selectedPlacemark )
             
+        }
+    }
+}
+
+extension HomeViewController: RideActionViewDelegate {
+    
+    func uploudTrip(_ view: RideActionView) {
+        guard let pickupCoordinate = locationManager?.location?.coordinate else { return}
+        guard let distanitionCoordinate = view.destination?.coordinate else { return}
+        Service.shared.uploudTrip(pickupCoordinate, distanitionCoordinate) { (err, ref) in
+            if let error = err {
+                print("Debug: Feiled to uploud trip with error \( error)")
+            }
+            
+            print("Debug: Did uploud saccessfully ")
         }
     }
 }

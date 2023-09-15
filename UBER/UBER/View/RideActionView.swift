@@ -8,9 +8,15 @@
 import UIKit
 import MapKit
 
+protocol RideActionViewDelegate: class {
+    func uploudTrip(_ view: RideActionView)
+}
+
 class RideActionView: UIView {
 
 //MARK: - Properteis
+    
+    weak var delegate: RideActionViewDelegate?
     
     var destination: MKPlacemark? {
         didSet {
@@ -119,6 +125,6 @@ class RideActionView: UIView {
     
     //MARK: - Selecters
     @objc func actionBtnPressed() {
-        
+        delegate?.uploudTrip(self) 
     }
 }

@@ -12,9 +12,10 @@ import GeoFire
 let DB_REF = Database.database().reference()
 let REF_USERS = DB_REF.child("users")
 let REF_DRIVER_LOCATIONS =  DB_REF.child("driver-locations")
+let REF_TRIPS = DB_REF.child("trips")
 
-struct Servece {
-    static let shared = Servece()
+struct Service {
+    static let shared = Service()
      func fetchUserData(uid: String, completion: @escaping(User) -> Void) {
         REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let dectionary = snapshot.value as? [String: Any] else { return }
@@ -34,5 +35,17 @@ struct Servece {
             }
         }
     }
- }
- 
+    func uploudTrip(_ pickupCoordinate: CLLocationCoordinate2D, _ distanetionCoordinate: CLLocationCoordinate2D, completion: @escaping(Error? , DatabaseReference) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid  else { return}
+        
+        let pickupArray = [pickupCoordinate.latitude, pickupCoordinate.longitude]
+        let distanetionArray = [distanetionCoordinate.latitude, distanetionCoordinate.longitude]
+        
+        let value = ["pickupcoordinate": pickupArray,
+                     "distanitionCoordinate": distanetionArray, 
+                     "state": TripStatus.requested.rawValue] as [String : Any]
+        
+        REF_TRIPS.child(uid).updateChildValues(value, withCompletionBlock: completion)
+         
+    }
+}

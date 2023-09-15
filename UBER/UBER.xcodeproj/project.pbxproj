@@ -15,6 +15,7 @@
 		52917DF92AAB448A000FDD67 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF82AAB448A000FDD67 /* User.swift */; };
 		52917DFB2AAB6104000FDD67 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DFA2AAB6104000FDD67 /* LocationHandler.swift */; };
 		52A3A6A02AB4971E00AD0B09 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A3A69F2AB4971E00AD0B09 /* RideActionView.swift */; };
+		52A3A6A22AB4E01C00AD0B09 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A3A6A12AB4E01C00AD0B09 /* Trip.swift */; };
 		52BF155F2AA817D300167E5C /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF155E2AA817D300167E5C /* LoginController.swift */; };
 		52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15602AA8577B00167E5C /* SignUpController.swift */; };
 		52BF15632AA8AE0F00167E5C /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BF15622AA8AE0F00167E5C /* AuthButton.swift */; };
@@ -38,6 +39,7 @@
 		52917DF82AAB448A000FDD67 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		52917DFA2AAB6104000FDD67 /* LocationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		52A3A69F2AB4971E00AD0B09 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
+		52A3A6A12AB4E01C00AD0B09 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
 		52BF155E2AA817D300167E5C /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		52BF15602AA8577B00167E5C /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		52BF15622AA8AE0F00167E5C /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				52917DF82AAB448A000FDD67 /* User.swift */,
 				52698AD02AB3232B0054E987 /* DriverAnnatation.swift */,
+				52A3A6A12AB4E01C00AD0B09 /* Trip.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52A3A6A22AB4E01C00AD0B09 /* Trip.swift in Sources */,
 				52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */,
 				52917DF32AA9DEF3000FDD67 /* LocationInputView.swift in Sources */,
 				52BF15632AA8AE0F00167E5C /* AuthButton.swift in Sources */,
