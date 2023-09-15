@@ -150,7 +150,7 @@ class HomeViewController: UIViewController {
         view.addSubview(tableVeiw )
     }
     
-    func dismissLocationInputView(completion: ((Bool) -> Void)?) {
+    func dismissLocationView(completion: ((Bool) -> Void)?) {
         UIView.animate(withDuration: 0.3, animations: {
             self.locationInputView.alpha = 0
             self.tableVeiw.frame.origin.y = self.view.frame.height
@@ -227,7 +227,7 @@ extension HomeViewController: LocationInputActivationViewDelegate {
 // MARK: - LocationViewDelegate
 extension HomeViewController: LocationInputViewDelegate {
     func dismissLocationInputView() {
-       dismissLocationInputView()
+       dismissLocationView()
     }
     
     func executeSearch(query: String) {
