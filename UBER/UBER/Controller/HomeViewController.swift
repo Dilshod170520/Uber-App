@@ -150,16 +150,15 @@ class HomeViewController: UIViewController {
         view.addSubview(tableVeiw )
     }
     
-    func dismissInputView(complition: ((Bool) -> Void)?) {
-       
-        UIView.animate (withDuration: 0.3, animations: {
+    func dismissLocationInputView(completion: ((Bool) -> Void)?) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.locationInputView.alpha = 0
             self.tableVeiw.frame.origin.y = self.view.frame.height
             self.locationInputView.removeFromSuperview()
-            UIView.animate (withDuration: 0.3, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.inputactivationView.alpha = 1
             })
-          }, completion: complition)
+          }, completion: completion)
         }
     }
 
@@ -227,6 +226,10 @@ extension HomeViewController: LocationInputActivationViewDelegate {
 }
 // MARK: - LocationViewDelegate
 extension HomeViewController: LocationInputViewDelegate {
+    func dismissLocationInputView() {
+       dismissLocationInputView()
+    }
+    
     func executeSearch(query: String) {
         searchBy(naturalLanguageQuery: query) { results in
             self.searchResults = results
@@ -234,17 +237,10 @@ extension HomeViewController: LocationInputViewDelegate {
         }
     }
     
-    func dismissLocationInputView() {
-        UIView.animate(withDuration: 0.3) {
-            self.locationInputView.alpha = 0
-            self.tableVeiw.frame.origin.y = self.view.frame.height
-        } completion: { _ in
-            self.tableVeiw.removeFromSuperview()
-            UIView.animate(withDuration: 0.3) {
-                 self.inputactivationView.alpha = 1
-            }
-        }
-    }
+    
+    
+    
+    
 }
 
 //MARK: - UITableViewDelegate UITableViewDataSource
