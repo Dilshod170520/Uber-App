@@ -132,7 +132,6 @@ class HomeViewController: UIViewController {
                 self.tableVeiw.frame.origin.y = self.locationInputHeight
             }
         }
-        
     }
     func configureTableVeiw() {
         tableVeiw.delegate = self
@@ -150,7 +149,20 @@ class HomeViewController: UIViewController {
                                  height: height)
         view.addSubview(tableVeiw )
     }
-}
+    
+    func dismissInputView(complition: ((Bool) -> Void)?) {
+       
+        UIView.animate (withDuration: 0.3, animations: {
+            self.locationInputView.alpha = 0
+            self.tableVeiw.frame.origin.y = self.view.frame.height
+            self.locationInputView.removeFromSuperview()
+            UIView.animate (withDuration: 0.3, animations: {
+                self.inputactivationView.alpha = 1
+            })
+          }, completion: complition)
+        }
+    }
+
 
 //MARK: - MAP Helper functions
 
@@ -257,5 +269,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return  "Test"
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Debug: tapped \( indexPath.row )")
     }
 }
