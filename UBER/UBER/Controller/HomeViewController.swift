@@ -458,8 +458,9 @@ extension HomeViewController: RideActionViewDelegate {
 
 //MARK: -
 extension HomeViewController: PickupcontrollerDelegate {
+  
     func didAcceptTrip(_ trip: Trip) {
-        self.trip?.state = .completed
+        self.trip?.state = .accepted
         self.dismiss(animated: true)
    
     }
