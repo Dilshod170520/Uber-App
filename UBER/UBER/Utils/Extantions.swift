@@ -178,6 +178,12 @@ extension MKMapView {
     }
 }
 extension UIViewController {
+    func presentAlertController(withTitle title: String ,  messege: String) {
+        let alert = UIAlertController(title: title, message: messege, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+        present(alert, animated: true)
+    }
+    
     func shouldPresentLocationView(_ present: Bool, massege: String? = nil) {
         if present {
             let loudingView = UIView()

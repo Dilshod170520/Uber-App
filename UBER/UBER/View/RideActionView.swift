@@ -10,6 +10,7 @@ import MapKit
 
 protocol RideActionViewDelegate: class {
     func uploudTrip(_ view: RideActionView)
+    func cencelTrip()
 }
 
 enum RideActionViewConfiguration {
@@ -164,7 +165,7 @@ class RideActionView: UIView {
         case .requesRide:
             delegate?.uploudTrip(self)
         case .cencel:
-            print("Debug: Handle Cencel ")
+            delegate?.cencelTrip() 
         case .getDirections:
             print("Debug: Handle Get Dirictions")
         case .pickup:

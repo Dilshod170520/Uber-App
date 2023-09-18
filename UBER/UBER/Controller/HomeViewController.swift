@@ -338,7 +338,7 @@ private extension HomeViewController {
         }
     }
     
-    func removeAnnotationsAndOverlys() {
+    func  removeAnnotationsAndOverlys() {
         mapView.annotations.forEach { (annotation) in
             if let anno = annotation as? MKPointAnnotation {
                 mapView.removeAnnotation(anno)
@@ -347,6 +347,16 @@ private extension HomeViewController {
         if mapView.overlays.count > 0 {
             mapView.removeOverlay(mapView.overlays[0])
         }
+    }
+    
+    func centerMapOnUserLocation() {
+        guard let coordinate = locationManager?.location?.coordinate else { return}
+        
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 2000,
+                                        longitudinalMeters: 2000)
+        mapView.setRegion(region, animated: true)
+        
     }
 }
 
@@ -484,11 +494,23 @@ extension HomeViewController: RideActionViewDelegate {
                 print("DEBUG: Failed to upload trip with error \(error)")
                 return
             }
-           
-            
             UIView.animate(withDuration: 0.3, animations: {
                 self.rideActionView.frame.origin.y = self.view.frame.height
             })
+        }
+    }
+    func cencelTrip() {
+        Service.shared.cencelTrip { error, ref in
+            if let error = error {
+                print("Debug:  Error deleting .....>>>>>> \(error.localizedDescription)")
+                return
+            }
+            self.centerMapOnUserLocation()
+            self.animateRideActionView(shouldShow: false)
+            self.removeAnnotationsAndOverlys()
+            
+            self.actionBtn.setImage(UIImage(systemName: "text.justify"), for: .normal)
+            self.actionbuttonConfig = .showMenu
         }
     }
 }
@@ -507,6 +529,13 @@ extension HomeViewController: PickupcontrollerDelegate {
         generatePolyline(toDestination: mapItem)
         
         mapView.zoomToFit(annotation: mapView.annotations)
+        
+        Service.shared.observeCencelled(trip: trip) {
+            self.removeAnnotationsAndOverlys()
+            self.animateRideActionView(shouldShow: false)
+            self.centerMapOnUserLocation()
+            self.presentAlertController(withTitle: "Ooops!", messege:  "The passenge has cencelled this trip ")
+         }
         
         self.dismiss(animated: true) {
             Service.shared.fetchUserData(uid: trip.passengerUid) { passenger in
