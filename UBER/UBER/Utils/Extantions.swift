@@ -9,8 +9,13 @@ import UIKit
 import MapKit
 
 extension UIColor {
-    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor.init(red: red/255, green: green/255, blue: blue/255, alpha: 1.0)
+    static func rgb(red: CGFloat,
+                    green: CGFloat,
+                    blue: CGFloat) -> UIColor {
+        return UIColor.init(red: red/255,
+                            green: green/255,
+                            blue: blue/255,
+                            alpha: 1.0)
     }
     
     static let backgroundColor = UIColor.rgb(red: 25, green: 25, blue: 25)
@@ -26,7 +31,6 @@ extension UIView {
         imageView.alpha = 0.87
         
         view.addSubview(imageView)
-        
         
         if let textField = textField {
             
@@ -50,7 +54,6 @@ extension UIView {
             sc.centerY(inView: view, constant: 5)
             
         }
-        
         
         let sepaterView = UIView()
         sepaterView.backgroundColor = .lightGray
@@ -85,15 +88,12 @@ extension UIView {
         if let right = right {
             rightAnchor.constraint(equalTo: right, constant: -paddingRight).isActive = true
         }
-        
         if let bottom = bottom {
             bottomAnchor.constraint(equalTo: bottom, constant: -paddingBottom).isActive = true
         }
-        
         if let width = width {
             widthAnchor.constraint(equalToConstant: width).isActive = true
         }
-        
         if let height = height {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
@@ -110,13 +110,10 @@ extension UIView {
          translatesAutoresizingMaskIntoConstraints = false
         centerYAnchor.constraint(equalTo: view.centerYAnchor,
                                  constant: constant ).isActive = true
-        
         if let left = leftAnchor {
             ancher(left: left , paddingLeft: paddingLeft)
         }
     }
-    
-    
     
     func setDimensions(height: CGFloat , width: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +127,6 @@ extension UIView {
         layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
         layer.masksToBounds = false
     }
-    
 }
 extension UITextField {
     func textField(withPlaceholder placeholder: String , isSecureTextEntry: Bool) -> UITextField {
@@ -181,3 +177,49 @@ extension MKMapView {
                           animated: true )
     }
 }
+extension UIViewController {
+    func shouldPresentLocationView(_ present: Bool, massege: String? = nil) {
+        if present {
+            let loudingView = UIView()
+            loudingView.frame = self.view.frame
+            loudingView.backgroundColor = .black
+            loudingView.alpha = 0
+            loudingView.tag = 1
+             
+            let indicator = UIActivityIndicatorView()
+            indicator.style = .large
+            indicator.center = view.center
+            
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 24)
+            label.text = massege
+            label.textColor = .white
+            label.textAlignment = .center
+            label.alpha = 0.87 
+            
+            view.addSubview(loudingView)
+            loudingView.addSubview(indicator)
+            loudingView .addSubview(label)
+            
+            label.centerX(inView: view)
+            label.ancher(top: indicator.bottomAnchor, paddingTop: 32)
+            
+            indicator.startAnimating()
+            
+            UIView.animate(withDuration: 0.3) {
+                loudingView.alpha = 0.7
+            }
+        } else {
+            view.subviews.forEach { subview in
+                if subview.tag == 1 {
+                    UIView.animate(withDuration: 0.3) {
+                        subview.alpha = 0
+                    } completion: { _ in
+                        subview.removeFromSuperview()
+                    }
+                }
+            }
+        }
+    }
+}
+

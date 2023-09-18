@@ -125,7 +125,6 @@ class LocationInputView: UIView {
         startLocationIndeketorView.setDimensions(height: 8, width: 8)
         startLocationIndeketorView.layer.cornerRadius = 8  / 2
         
-        
         addSubview(destanitionIndekatorView)
         destanitionIndekatorView.centerY(inView: destinetionLocationTextField,
                                          leftAnchor: leftAnchor ,
@@ -135,7 +134,6 @@ class LocationInputView: UIView {
         addSubview(linkingView)
         linkingView.centerX(inView: startLocationIndeketorView)
         linkingView.ancher(top: startLocationIndeketorView.bottomAnchor, bottom: destanitionIndekatorView.topAnchor , paddingTop: 5, paddingBottom: 5, width: 1.5)
-        
     }
 // MARK: - Sellecter
     @objc func handleBackTapped() {
