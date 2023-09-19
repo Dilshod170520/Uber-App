@@ -10,8 +10,6 @@ import Firebase
 import CoreLocation
 import MapKit
 
-
-
 private let annotationIdentifier = "DriverAnnotation"
 
 private enum ActionButtonConfiguration {
@@ -22,10 +20,12 @@ private enum ActionButtonConfiguration {
         self = .showMenu
     }
 }
-
 enum AnnotationType: String {
     case pickup
     case destation
+}
+protocol HomeControllerDelegate: class {
+    func handleMenuTaggle()
 }
 class HomeViewController: UIViewController {
         
@@ -42,7 +42,9 @@ class HomeViewController: UIViewController {
     private var actionbuttonConfig = ActionButtonConfiguration()
     private var route: MKRoute?
     
-    private var  user: User? {
+    weak var delegate: HomeControllerDelegate?
+     
+      var  user: User? {
         didSet {
             locationInputView.user = user
             if user?.accountType == .passenger {
@@ -77,21 +79,19 @@ class HomeViewController: UIViewController {
         button.addTarget(self, action: #selector(actionBtnPressed), for: .touchUpInside)
         return button
     }()
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         enableLocationServices()
-        checkIfLoggedIn()
-      
-    }
+        configurUI()
+     }
 
     // MARK: - Selecters
     
     @objc func actionBtnPressed() {
         switch actionbuttonConfig {
         case .showMenu:
-            print("show menu ")
+            delegate?.handleMenuTaggle() 
         case .dismissActionView:
             self.removeAnnotationsAndOverlys()
             mapView.showAnnotations(mapView.annotations, animated: true)
@@ -192,43 +192,11 @@ class HomeViewController: UIViewController {
                                         messege:  "The passenge has cencelled this trip ")
          }
     }
-    
-    //MARK: - Shared API
-    
-    func fetchUserData() {
-        guard let uid = Auth.auth().currentUser?.uid else { return}
-        Service.shared.fetchUserData(uid: uid) { user in
-            self.user = user
-        }
-    }
-    func checkIfLoggedIn() {
-        if Auth.auth().currentUser?.uid  == nil {
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
-            }
-        } else {
-           configure()
-        }
-    }
-    
-    func signOut() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
-            }
-        } catch {
-            print("DEBUG: Error singing out ")
-        }
-    }
+
      // MARK: - Helper functions
     func configure() {
         configurUI()
-        fetchUserData()
+       
     }
    
     fileprivate func configureActionBtn(config: ActionButtonConfiguration) {
@@ -639,7 +607,7 @@ extension HomeViewController: PickupcontrollerDelegate {
         setCustomRegion(withType: .pickup, coordinate: trip.pickupCoordinate)
 
         let placemark = MKPlacemark(coordinate: trip.pickupCoordinate)
-        let mapItem = MKMapItem(placemark: placemark)
+        let mapItem = MKMapItem(placemark: placemark )
         generatePolyline(toDestination: mapItem)
         mapView.zoomToFit(annotation: mapView.annotations)
 

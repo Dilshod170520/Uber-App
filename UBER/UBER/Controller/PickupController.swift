@@ -82,15 +82,12 @@ class PickupController: UIViewController {
     
     func configureMapView() {
         guard let tripCoordinate = trip?.pickupCoordinate else { return}
-
         let region = MKCoordinateRegion(center: tripCoordinate,
                                         latitudinalMeters: 1000,
                                         longitudinalMeters: 1000)
         mapView.setRegion(region, animated: false)
-        
         mapView.addAnnotationAndSelect(forCoordinate: tripCoordinate )
     }
-    
     func configurUI() {
         view.backgroundColor = .black
         
@@ -98,13 +95,11 @@ class PickupController: UIViewController {
         cencelBtn.ancher(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor,
                          paddingLeft: 16)
-        
         view.addSubview(mapView)
         mapView.setDimensions(height: 270, width: 270)
         mapView.layer.cornerRadius = 270 / 2
         mapView.centerX(inView: view)
         mapView.centerY(inView: view, constant: -170)
-         
         view.addSubview(pickupLabel)
         pickupLabel.centerX(inView: view)
         pickupLabel.ancher(top: mapView.bottomAnchor,

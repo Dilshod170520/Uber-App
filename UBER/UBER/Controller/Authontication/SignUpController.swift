@@ -130,7 +130,6 @@ class SignUpController: UIViewController {
             self.uploadUserDataAndShowHomeController(uid: uid, values: values)
          }
     }
-    
     //MARK: - Helper functions
     func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
         REF_USERS.child(uid).updateChildValues(values) { error, ref in
@@ -141,9 +140,9 @@ class SignUpController: UIViewController {
          //        getting window from windowScene
                  let window = windowScene?.windows.first
          //        getting the root view controller
-             let rootVC = window?.rootViewController as? HomeViewController
+             let rootVC = window?.rootViewController as? ContainerController
          //        changing the root view controller
-               window?.rootViewController = HomeViewController()
+               window?.rootViewController = ContainerController()
              rootVC?.configure()
            self.dismiss(animated: true)
       }
@@ -154,7 +153,6 @@ class SignUpController: UIViewController {
         view.addSubview(titleLabe)
         titleLabe.ancher(top: view.safeAreaLayoutGuide.topAnchor)
         titleLabe.centerX(inView: view)
-        
         
         let stack = UIStackView(arrangedSubviews: [ emailContener, fullnameContener, passwordContener, accountTypeContainer ,  ])
         stack.axis = .vertical
@@ -169,7 +167,6 @@ class SignUpController: UIViewController {
                      paddingLeft: 16 ,
                      paddingRight: 16 )
         
-      
         view.addSubview(signupButton)
         signupButton.ancher(top: stack.bottomAnchor,
                             left: view.leftAnchor,
@@ -179,14 +176,10 @@ class SignUpController: UIViewController {
                             paddingRight: 16,
                             height: 50)
 
-        
         view.addSubview(alreadyHaveAccount)
         alreadyHaveAccount.ancher( bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: 5)
         alreadyHaveAccount.centerX(inView: view)
         
         alreadyHaveAccount.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
     }
-    
-    
-    
 }

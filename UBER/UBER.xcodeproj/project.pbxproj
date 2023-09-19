@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5263E80A2AB9786200082C66 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5263E8092AB9786200082C66 /* MenuController.swift */; };
+		5263E80C2AB9788A00082C66 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5263E80B2AB9788A00082C66 /* ContainerController.swift */; };
+		5263E80E2AB9C98B00082C66 /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5263E80D2AB9C98B00082C66 /* MenuHeader.swift */; };
 		52698AD12AB3232B0054E987 /* DriverAnnatation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52698AD02AB3232B0054E987 /* DriverAnnatation.swift */; };
 		527A64332AB543F700B74CAA /* PickupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527A64322AB543F700B74CAA /* PickupController.swift */; };
 		52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */; };
@@ -32,6 +35,9 @@
 /* Begin PBXFileReference section */
 		0B023CD4F25542D7966DBB26 /* Pods-UBER.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.debug.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.debug.xcconfig"; sourceTree = "<group>"; };
 		333F0D6258D68227EBEC3852 /* Pods-UBER.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UBER.release.xcconfig"; path = "Target Support Files/Pods-UBER/Pods-UBER.release.xcconfig"; sourceTree = "<group>"; };
+		5263E8092AB9786200082C66 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		5263E80B2AB9788A00082C66 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
+		5263E80D2AB9C98B00082C66 /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		52698AD02AB3232B0054E987 /* DriverAnnatation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnatation.swift; sourceTree = "<group>"; };
 		527A64322AB543F700B74CAA /* PickupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupController.swift; sourceTree = "<group>"; };
 		52917DF02AA9A16F000FDD67 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
@@ -76,11 +82,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		52BF155D2AA817A500167E5C /* Controller */ = {
+		5263E8072AB9779800082C66 /* Authontication */ = {
 			isa = PBXGroup;
 			children = (
 				52BF155E2AA817D300167E5C /* LoginController.swift */,
 				52BF15602AA8577B00167E5C /* SignUpController.swift */,
+			);
+			path = Authontication;
+			sourceTree = "<group>";
+		};
+		5263E8082AB977A800082C66 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				5263E8092AB9786200082C66 /* MenuController.swift */,
+				5263E80B2AB9788A00082C66 /* ContainerController.swift */,
+			);
+			path = SideMenu;
+			sourceTree = "<group>";
+		};
+		52BF155D2AA817A500167E5C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5263E8082AB977A800082C66 /* SideMenu */,
+				5263E8072AB9779800082C66 /* Authontication */,
 				52BF15662AA8F5CD00167E5C /* HomeViewController.swift */,
 				527A64322AB543F700B74CAA /* PickupController.swift */,
 			);
@@ -147,6 +171,7 @@
 				52917DF22AA9DEF3000FDD67 /* LocationInputView.swift */,
 				52917DF42AAAF2B1000FDD67 /* LocationCell.swift */,
 				52A3A69F2AB4971E00AD0B09 /* RideActionView.swift */,
+				5263E80D2AB9C98B00082C66 /* MenuHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -286,6 +311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52A3A6A22AB4E01C00AD0B09 /* Trip.swift in Sources */,
+				5263E80A2AB9786200082C66 /* MenuController.swift in Sources */,
 				527A64332AB543F700B74CAA /* PickupController.swift in Sources */,
 				52BF15612AA8577B00167E5C /* SignUpController.swift in Sources */,
 				52917DF32AA9DEF3000FDD67 /* LocationInputView.swift in Sources */,
@@ -300,7 +326,9 @@
 				52917DF12AA9A16F000FDD67 /* LocationInputActivationView.swift in Sources */,
 				52BF15672AA8F5CD00167E5C /* HomeViewController.swift in Sources */,
 				52A3A6A02AB4971E00AD0B09 /* RideActionView.swift in Sources */,
+				5263E80E2AB9C98B00082C66 /* MenuHeader.swift in Sources */,
 				52917DF92AAB448A000FDD67 /* User.swift in Sources */,
+				5263E80C2AB9788A00082C66 /* ContainerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
