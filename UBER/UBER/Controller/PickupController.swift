@@ -72,7 +72,7 @@ class PickupController: UIViewController {
     
     @objc func handleAcceptTrip() {
         guard let trip = trip else { return }
-        Service.shared.acceptTrip(trip: trip) { Error, ref in
+        DriverService.shared.acceptTrip(trip: trip) { Error, ref in
             self.delagete?.didAcceptTrip(trip)
         }
     }
