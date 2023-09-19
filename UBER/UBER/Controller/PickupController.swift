@@ -81,16 +81,14 @@ class PickupController: UIViewController {
     //MARK: - Helper function
     
     func configureMapView() {
-        let region = MKCoordinateRegion(center: (trip?.pickupCoordinate)!,
+        guard let tripCoordinate = trip?.pickupCoordinate else { return}
+
+        let region = MKCoordinateRegion(center: tripCoordinate,
                                         latitudinalMeters: 1000,
                                         longitudinalMeters: 1000)
         mapView.setRegion(region, animated: false)
-        guard let tripCoordinate = trip?.pickupCoordinate else { return}
         
-        let anno  = MKPointAnnotation()
-        anno.coordinate = tripCoordinate
-        mapView.addAnnotation(anno)
-        mapView.selectAnnotation(anno, animated: true)
+        mapView.addAnnotationAndSelect(forCoordinate: tripCoordinate )
     }
     
     func configurUI() {

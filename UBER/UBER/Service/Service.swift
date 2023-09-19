@@ -18,9 +18,9 @@ struct Service {
     static let shared = Service()
     func fetchUserData(uid: String, completion: @escaping(User) -> Void) {
         REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
-            guard let dectionary = snapshot.value as? [String: Any] else { return }
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
             let uid = snapshot.key
-            let user = User(uid: uid, dictionary: dectionary)
+            let user = User(uid: uid, dictionary: dictionary)
             completion(user)
         }
     }
@@ -35,45 +35,43 @@ struct Service {
             }
         }
     }
-    func uploudTrip(_ pickupCoordinate: CLLocationCoordinate2D, _ distanetionCoordinate: CLLocationCoordinate2D, completion: @escaping(Error? , DatabaseReference) -> Void) {
-        guard let uid = Auth.auth().currentUser?.uid  else { return}
+    func uploadTrip(_ pickupCoordinates: CLLocationCoordinate2D, _ destinationCoordinates: CLLocationCoordinate2D, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        let pickupArray = [pickupCoordinate.latitude, pickupCoordinate.longitude]
-        let distanetionArray = [distanetionCoordinate.latitude, distanetionCoordinate.longitude]
+        let pickupArray = [pickupCoordinates.latitude, pickupCoordinates.longitude]
+        let destinationArray = [destinationCoordinates.latitude, destinationCoordinates.longitude]
         
-        let value = ["pickupcoordinate": pickupArray,
-                     "distanitionCoordinate": distanetionArray,
-                     "state": TripStatus.requested.rawValue] as [String : Any]
+        let values = ["pickupCoordinates": pickupArray,
+                      "destinationCoordinates": destinationArray,
+                      "state": TripStatus.requested.rawValue] as [String : Any]
         
-        REF_TRIPS.child(uid).updateChildValues(value, withCompletionBlock: completion)
-        
+        REF_TRIPS.child(uid).updateChildValues(values, withCompletionBlock: completion)
     }
-    func observeTrips(completion: @escaping(Trip)-> Void) {
-        REF_TRIPS.observe(.childAdded) { snapshot in
+    
+    func observeTrips(completion: @escaping(Trip) -> Void) {
+        REF_TRIPS.observe(.childAdded) { (snapshot) in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             let uid = snapshot.key
             let trip = Trip(passengerUid: uid, dictionary: dictionary)
-            completion (trip)
+            completion(trip)
         }
     }
     
-    
-    func acceptTrip(trip: Trip , completion: @escaping(Error? , DatabaseReference)-> Void) {
+    func acceptTrip(trip: Trip, completion: @escaping(Error?, DatabaseReference) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let value = ["driverUid": uid, "State": TripStatus.accepted.rawValue] as [String : Any]
-        
-        REF_TRIPS.child(trip.passengerUid).updateChildValues(value, withCompletionBlock: completion)
-        
+        let values = ["driverUid": uid,
+                      "state": TripStatus.accepted.rawValue] as [String : Any]
+        REF_TRIPS.child(trip.passengerUid).updateChildValues(values, withCompletionBlock: completion)
     }
-    
-    func observeCurrentTrip(complition: @escaping(Trip) -> Void) {
+
+    func observeCurrentTrip(completion: @escaping(Trip) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        REF_TRIPS.child(uid).observe(.value) { snapshot in
-            guard let dictionary = snapshot.value as? [String: Any] else { return}
+        REF_TRIPS.child(uid).observe(.value) { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
             let uid = snapshot.key
             let trip = Trip(passengerUid: uid, dictionary: dictionary)
-            complition(trip)
+            completion(trip)
         }
     }
     
@@ -82,9 +80,22 @@ struct Service {
             complition()
         }
     }
-    
-    func cencelTrip(complition: @escaping(Error?, DatabaseReference) -> Void) {
+     func deleteTrip(complition: @escaping(Error?, DatabaseReference) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return}
         REF_TRIPS.child(uid).removeValue(completionBlock: complition)
+    }
+    
+    func updateDriverLocation(location: CLLocation) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+        geofire.setLocation(location, forKey: uid)
+    }
+    
+    func updateTripState(trip: Trip, state: TripStatus, complitoin: @escaping(Error?, DatabaseReference) -> Void){
+        REF_TRIPS.child(trip.passengerUid).child("state").setValue(state.rawValue, withCompletionBlock: complitoin )
+        
+        if state == .completed {
+            REF_TRIPS.child(trip.passengerUid).removeAllObservers()
+        }
     }
 }
